@@ -2,7 +2,7 @@ var app = angular.module('sentinelDashboardApp');
 
 app.controller('FlowControllerV2', ['$scope', '$stateParams', 'FlowServiceV2', 'ngDialog',
   'MachineService',
-  function ($scope, $stateParams, FlowService, ngDialog,
+  function ($scope, $stateParams, FlowServiceV2, ngDialog,
     MachineService) {
     $scope.app = $stateParams.app;
 
@@ -46,7 +46,7 @@ app.controller('FlowControllerV2', ['$scope', '$stateParams', 'FlowServiceV2', '
         return;
       }
       var mac = $scope.macInputModel.split(':');
-      FlowService.queryMachineRules($scope.app, mac[0], mac[1]).success(
+      FlowServiceV2.queryMachineRules($scope.app, mac[0], mac[1]).success(
         function (data) {
           if (data.code == 0 && data.data) {
             $scope.rules = data.data;
@@ -107,7 +107,7 @@ app.controller('FlowControllerV2', ['$scope', '$stateParams', 'FlowServiceV2', '
     };
 
     $scope.saveRule = function () {
-      if (!FlowService.checkRuleValid($scope.currentRule)) {
+      if (!FlowServiceV2.checkRuleValid($scope.currentRule)) {
         return;
       }
       if ($scope.flowRuleDialog.type === 'add') {
@@ -144,7 +144,7 @@ app.controller('FlowControllerV2', ['$scope', '$stateParams', 'FlowServiceV2', '
     };
 
     function deleteRule(rule) {
-      FlowService.deleteRule(rule).success(function (data) {
+      FlowServiceV2.deleteRule(rule).success(function (data) {
         if (data.code == 0) {
           getMachineRules();
           confirmDialog.close();
@@ -155,7 +155,7 @@ app.controller('FlowControllerV2', ['$scope', '$stateParams', 'FlowServiceV2', '
     };
 
     function addNewRule(rule) {
-      FlowService.newRule(rule).success(function (data) {
+      FlowServiceV2.newRule(rule).success(function (data) {
         if (data.code == 0) {
           getMachineRules();
           flowRuleDialog.close();
@@ -173,7 +173,7 @@ app.controller('FlowControllerV2', ['$scope', '$stateParams', 'FlowServiceV2', '
     };
 
     function saveRule(rule, edit) {
-      FlowService.saveRule(rule).success(function (data) {
+      FlowServiceV2.saveRule(rule).success(function (data) {
         if (data.code == 0) {
           getMachineRules();
           if (edit) {
